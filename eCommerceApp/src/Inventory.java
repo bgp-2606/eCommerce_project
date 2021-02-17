@@ -44,21 +44,35 @@ public class Inventory {
      *  Gets the number of stocks for a specific book.
      */
     public int getNumStock(int id) {
-        return numStock.get(getIndex(id));
+        int i = getIndex(id);
+        // if it does not exist
+        if (i == -1) {
+            return i;
+        }
+
+        //if it exists
+        return this.numStock.get(i);
     }
 
     /**
-     * Gets the book type given its id.
+     * Gets the type of a specific book given an id.
      */
-    public String getType(int id){
-        return bookType.get(getIndex(id));
-    }
+    public String getType(int id) {
+        int i = getIndex(id);
+        // if it does not exist
+        if (i == -1) {
+            return null;
+        }
 
+        //if it exists
+        return this.bookType.get(i);
+    }
+    
     /**
      * Gets the list of books in the inventory.
      */
     public ArrayList<Product> getBookList() {
-        return bookList;
+        return this.bookList;
     }
 
     /**
@@ -66,16 +80,16 @@ public class Inventory {
      *  If book does not exist, create new book.
      */
     public void addStock(Product book, int quantity, String type) {
-        if (bookList.contains(book)) {
-            int i = bookList.indexOf(book);
-            int stock = numStock.get(i);
+        if (this.bookList.contains(book)) {
+            int i = this.bookList.indexOf(book);
+            int stock = this.numStock.get(i);
 
-            numStock.set(i, stock + quantity);
+            this.numStock.set(i, stock + quantity);
 
         } else {
-            bookList.add(book);
-            numStock.add(quantity);
-            bookType.add(type);
+            this.bookList.add(book);
+            this.numStock.add(quantity);
+            this.bookType.add(type);
         }
     }
 
@@ -83,23 +97,22 @@ public class Inventory {
     /**
      *  Decreases the number of stock of a specific book.
      */
-    public void removeStock(Product book, int quantity) {
-        int i = bookList.indexOf(book);
-        int stock = numStock.get(i);
+    public boolean removeStock(int id, int quantity) {
+        Product target = getProductInfo(id);
+        int stock, i;
+        if (this.bookList.contains(target)) {
+            i = getIndex(id);
+            stock = this.numStock.get(i);
 
-        //checks if quantity value is invalid
-        if (quantity <= 0) {
-            System.out.println("Please enter a valid quantity.");
-
-        } else {
-
-            if (stock < quantity) {
-                System.out.println("There is not enough stocks available.");
-
-            } else {
-                numStock.set(i, stock - quantity);
+            //checks if quantity value is invalid or if not enough stocks
+            if (quantity <= 0 || stock < quantity) {
+                return false;
             }
+
+            this.numStock.set(i, stock - quantity);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -108,7 +121,7 @@ public class Inventory {
     public Product getProductInfo(int productId) {
         Product targetBook = null;
 
-        for(Product book : bookList) {
+        for(Product book : this.bookList) {
             if (book.getId() == productId) {
                 targetBook = book;
             }
@@ -122,7 +135,7 @@ public class Inventory {
      */
     private int getIndex(int id){
         Product targetBook = getProductInfo(id);
-        return bookList.indexOf(targetBook);
+        return this.bookList.indexOf(targetBook);
     }
 
 }

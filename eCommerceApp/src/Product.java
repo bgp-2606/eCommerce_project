@@ -5,7 +5,6 @@
     Bren-Gelyn Padlan
     101148482
  */
-
 public class Product {
     private final String name;
     private final int id;

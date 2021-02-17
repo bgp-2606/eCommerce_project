@@ -1,9 +1,6 @@
 public class Test {
     public static void main(String[] args) {
 
-        //Product book1 = new Product("book1", 001, 1.99);
-        //Product book2 = new Product("book2", 002, 2.45);
-
         //Inventory i1 = new Inventory();
 
         //i1.addStock(book1, 20);
@@ -19,6 +16,11 @@ public class Test {
         //System.out.println("Book 1 quantity: " + i1.getNumStock(book1.getId()));
         //System.out.println("Book 2 quantity: " + i1.getNumStock(book2.getId()));
 
+        Product book1 = new Product("book1", 001, 1.99);
+        Product book2 = new Product("book2", 002, 2.45);
+        Product book4 = new Product("book4", 004, 1.05);
+
+
         int[][] items = new int[2][2];
 
         items[0][0] = 001;
@@ -29,15 +31,16 @@ public class Test {
         StoreManager sM = new StoreManager();
         double total = 0.0;
 
-        System.out.println(sM.getStock(001));
-        System.out.println(sM.getStock(002));
+        System.out.println(sM.getStock(book1));
+        System.out.println(sM.getStock(book2));
 
         total = sM.processTransaction(items);
 
         System.out.println(total);
 
-        System.out.println(sM.getStock(001));
-        System.out.println(sM.getStock(002));
+        System.out.println(sM.getStock(book1));
+        System.out.println(sM.getStock(book2));
+        System.out.println(sM.getStock(book4));
 
     }
 }

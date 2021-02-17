@@ -13,14 +13,14 @@ public class StoreManager {
      * Constructor for StoreManager initializing an inventory.
      */
     public StoreManager() {
-        inventory = new Inventory();
+        this.inventory = new Inventory();
     }
 
     /**
      * Gets the number of stock of a specific book.
      */
-    public int getStock(int id) {
-        return inventory.getNumStock(id);
+    public int getStock(Product product) {
+        return this.inventory.getNumStock(product.getId());
     }
 
     /**
@@ -31,6 +31,7 @@ public class StoreManager {
         // [[prodId1, quan1], [prodId2, quan2], [prodId3, quan3]]
 
         double totalPrice = 0.0;
+        boolean success = false;
         int id, quantity;
         Product target;
 
@@ -38,13 +39,13 @@ public class StoreManager {
 
             id = items[i][0];
             quantity = items[i][1];
-            target = inventory.getProductInfo(id);
+            target = this.inventory.getProductInfo(id);
 
-            if (inventory.getBookList().contains(target)) {
+            if (this.inventory.getBookList().contains(target)) {
 
                 // if the stock of target book is > quantity
-                if (inventory.getNumStock(id) > quantity) {
-                    inventory.removeStock(target, quantity);
+                if (this.inventory.getNumStock(id) > quantity) {
+                    success = this.inventory.removeStock(id, quantity);
                     totalPrice += target.getPrice() * quantity;
 
                 } else {
