@@ -34,7 +34,7 @@ public class Test {
         System.out.println(sM.getStock(book1));
         System.out.println(sM.getStock(book2));
 
-        total = sM.processTransaction(items);
+        sM.checkout();
 
         System.out.println(total);
 

@@ -9,34 +9,38 @@
 import java.util.ArrayList;
 
 public class Inventory {
-    private ArrayList<String> bookType;     //is it fiction or nonfiction?
-    private ArrayList<Integer> numStock;
     private ArrayList<Product> bookList;
+    private ArrayList<Integer> numStock;
+    private ArrayList<String> bookType;     //is it fiction or nonfiction?
 
     /**
      *  Constructor for inventory.
      */
     public Inventory() {
-        bookList = new ArrayList<>();
-        numStock = new ArrayList<>();
-        bookType = new ArrayList<>();
+        this.bookList = new ArrayList<Product>();
+        this.numStock = new ArrayList<Integer>();
+        this.bookType = new ArrayList<String>();
 
         //Below are for testing purposes
-        Product book1 = new Product("book1", 001, 1.99);
-        Product book2 = new Product("book2", 002, 2.45);
-        Product book3 = new Product("book3", 003, 1.50);
+        Product book1 = new Product("1984", 001, 1.99);
+        Product book2 = new Product("The Great Gatsby", 002, 2.45);
+        Product book3 = new Product("Silent Spring", 003, 1.86);
+        Product book4 = new Product("A Room of One's Own", 004, 3.75);
 
-        bookList.add(book1);
-        bookList.add(book2);
-        bookList.add(book3);
+        this.bookList.add(book1);
+        this.bookList.add(book2);
+        this.bookList.add(book3);
+        this.bookList.add(book4);
 
-        numStock.add(50);
-        numStock.add(50);
-        numStock.add(50);
+        this.numStock.add(37);
+        this.numStock.add(14);
+        this.numStock.add(1);
+        this.numStock.add(26);
 
-        bookType.add("fiction");
-        bookType.add("fiction");
-        bookType.add("nonfiction");
+        this.bookType.add("fiction");
+        this.bookType.add("fiction");
+        this.bookType.add("nonfiction");
+        this.bookType.add("nonfiction");
     }
 
 
@@ -79,14 +83,16 @@ public class Inventory {
      *  Increases the stock of a specific book, takes the book itself and quantity
      *  If book does not exist, create new book.
      */
-    public void addStock(Product book, int quantity, String type) {
-        if (this.bookList.contains(book)) {
-            int i = this.bookList.indexOf(book);
-            int stock = this.numStock.get(i);
+    public void addStock(Product book, Integer quantity, String type) {
+        for (Product p : this.bookList) {
+            if (book.getId() == p.getId()) {
+                int i = this.bookList.indexOf(book);
+                int stock = this.numStock.get(i);
 
-            this.numStock.set(i, stock + quantity);
-
-        } else {
+                this.numStock.set(i, stock + quantity);
+            }
+        }
+        if (!this.bookList.contains(book)) {
             this.bookList.add(book);
             this.numStock.add(quantity);
             this.bookType.add(type);
@@ -98,19 +104,21 @@ public class Inventory {
      *  Decreases the number of stock of a specific book.
      */
     public boolean removeStock(int id, int quantity) {
-        Product target = getProductInfo(id);
         int stock, i;
-        if (this.bookList.contains(target)) {
-            i = getIndex(id);
-            stock = this.numStock.get(i);
 
-            //checks if quantity value is invalid or if not enough stocks
-            if (quantity <= 0 || stock < quantity) {
-                return false;
+        for (Product p : this.bookList) {
+            if (id == p.getId()) {
+                i = getIndex(id);
+                stock = this.numStock.get(i);
+
+                //checks if quantity value is invalid or if not enough stocks
+                if (quantity <= 0 || stock < quantity) {
+                    this.numStock.set(i, 0);
+                    return true;
+                }
+                this.numStock.set(i, stock - quantity);
+                return true;
             }
-
-            this.numStock.set(i, stock - quantity);
-            return true;
         }
         return false;
     }
